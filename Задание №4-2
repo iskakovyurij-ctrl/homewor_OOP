@@ -1,0 +1,68 @@
+# Создаём объекты
+student1 = Student('Иванов', 'Иван', 'м')
+student2 = Student('Смирнова', 'Анна', 'ж')
+
+lecturer1 = Lecturer('Петров', 'Сергей')
+lecturer2 = Lecturer('Кузнецов', 'Алексей')
+
+reviewer1 = Reviewer('Лебедев', 'Дмитрий')
+reviewer2 = Reviewer('Фёдорова', 'Елена')
+
+# Записываем на курсы
+student1.courses_in_progress += ['Python', 'Java']
+student2.courses_in_progress += ['Python', 'C++']
+
+lecturer1.courses_attached += ['Python', 'Java']
+lecturer2.courses_attached += ['Python', 'C++']
+
+reviewer1.courses_attached += ['Python', 'Java']
+reviewer2.courses_attached += ['Python', 'C++']
+
+# Выставляем оценки (студенты → лекторам)
+student1.rate_lecture(lecturer1, 'Python', 9)
+student1.rate_lecture(lecturer1, 'Java', 8)
+student1.rate_lecture(lecturer2, 'Python', 7)
+
+student2.rate_lecture(lecturer1, 'Python', 10)
+student2.rate_lecture(lecturer2, 'Python', 6)
+
+# Проверяем вывод преподавателей с их средними баллами
+print(f'{"="*35} Лекторы {"="*35}')
+print(lecturer1)
+print()
+print(lecturer2)
+print()
+
+# Выставляем оценки (эксперты → студентам)
+reviewer1.rate_hw(student1, 'Python', 8)
+reviewer1.rate_hw(student1, 'Java', 7)
+reviewer1.rate_hw(student2, 'Python', 9)
+
+reviewer2.rate_hw(student1, 'Python', 7)
+reviewer2.rate_hw(student2, 'Python', 8)
+
+# Проверяем вывод студентов с их средними баллами
+print(f'{"="*35} Студенты {"="*35}')
+print(student1)
+print()
+print(student2)
+print()
+
+# Сравниваем между собой
+print(f'{lecturer1 > lecturer2=}')   # True — первый лучше
+print(f'{student1 < student2=}')     # False — второй не лучше первого
+
+# Подсчитываем средние оценки через наши функции
+students = [student1, student2]
+lecturers = [lecturer1, lecturer2]
+
+avg_python_students = average_students_grade(students, 'Python')  
+avg_java_students = average_students_grade(students, 'Java')
+
+avg_python_lecturers = average_lecturers_grade(lecturers, 'Python')
+avg_cpp_lecturers = average_lecturers_grade(lecturers, 'C++')
+
+print(f'\nСредняя оценка студентов по Python: {avg_python_students:.1f}') # 8.0
+print(f'Средняя оценка студентов по Java: {avg_java_students:.1f}')   # 7.0
+print(f'Средняя оценка лекторов по Python: {avg_python_lecturers:.1f}') # 8.0
+print(f'Средняя оценка лекторов по C++: {avg_cpp_lecturers:.1f}')      # 6.0 👍

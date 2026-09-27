@@ -1,0 +1,77 @@
+import functools
+
+
+# Добавляем декоратор total_ordering, чтобы работали все операторы сравнения
+@functools.total_ordering  
+class Student:
+    # ... остальной код класса остаётся без изменений ...
+    
+    def __str__(self):
+        avg_grade = self._average_grades()
+        
+        courses_in_progress = ', '.join(self.courses_in_progress) or 'Нет'
+        finished_courses = ', '.join(self.finished_courses) or 'Нет'
+        
+        return f'Имя: {self.first_name}\nФамилия: {self.last_name}' \
+               f'\nСредняя оценка за домашние задания: {"%.1f" % avg_grade if avg_grade else "нет оценок"}' \
+               f'\nКурсы в процессе изучения: {courses_in_progress}' \
+               f'\nЗавершенные курсы: {finished_courses}'
+
+    def _average_grades(self): 
+        """Внутренний метод для расчёта средней оценки"""
+        all_grades = [grade for course in self.grades.values() for grade in course]
+        return sum(all_grades)/len(all_grades) if all_grades else None
+
+    def __lt__(self, other):
+        """
+        Сравниваем студентов по средней оценке за ДЗ.
+        Возвращает True, если у текущего студента оценка меньше,
+        чем у другого.
+        """
+        my_avg = self._average_grades()
+        other_avg = other._average_grades()
+        
+        # Если у кого-то нет оценок, считаем его хуже
+        if not isinstance(other, Student):
+            raise TypeError('Сравнивать можно только со студентами!')
+            
+        return (my_avg or 0) < (other_avg or 0)
+
+
+# Добавляем декоратор total_ordering, чтобы работали все операторы сравнения
+@functools.total_ordering  
+class Lecturer(Mentor):
+    # ... остальной код класса остаётся без изменений ...
+    
+    def __str__(self):
+        avg_grade = self._average_grades()
+        return f'Имя: {self.name}\nФамилия: {self.surname}' \
+               f'\nСредняя оценка за лекции: {"%.1f" % avg_grade if avg_grade else "нет оценок"}'
+
+    def _average_grades(self):
+        """Внутренний метод для расчёта средней оценки лекций."""
+        all_grades = [grade for course in self.grades.values() for grade in course]
+        return sum(all_grades)/len(all_grades) if all_grades else None
+
+    def __lt__(self, other):
+        """
+        Сравниваем лекторов по средней оценке за лекции.
+        Возвращает True, если у текущего лектора оценка ниже,
+        чем у другого.
+        """
+        my_avg = self._average_grades()
+        other_avg = other._average_grades()
+        
+        # Если у кого-то нет оценок, считаем его хуже
+        if not isinstance(other, Lecturer):
+            raise TypeError('Сравнивать можно только с другими преподавателями!')
+            
+        return (my_avg or 0) < (other_avg or 0)
+
+
+class Reviewer(Mentor):
+    # ... остальной код класса остаётся без изменений ...
+    
+    def __str__(self):
+        return f'Имя: {self.name}\nФамилия: {self.surname}'
+1

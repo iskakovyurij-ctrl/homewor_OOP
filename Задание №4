@@ -1,0 +1,17 @@
+def average_students_grade(students_list, course):
+    # Собираем только те оценки студентов за указанный курс,
+    # которые у них есть в словаре grades
+    all_grades = [grade for student in students_list 
+                  if course in student.grades 
+                  for grade in student.grades[course]]
+    
+    return sum(all_grades) / len(all_grades) if all_grades else None
+
+
+def average_lecturers_grade(lecturers_list, course):
+    # Аналогично собираем оценки лекторов
+    all_grades = [grade for lecturer in lecturers_list 
+                  if course in lecturer.grades 
+                  for grade in lecturer.grades[course]]
+    
+    return sum(all_grades) / len(all_grades) if all_grades else None

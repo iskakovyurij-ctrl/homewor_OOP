@@ -1,0 +1,23 @@
+class Mentor:
+    def __init__(self, name, surname):
+        self.name = name  # Имя преподавателя
+        self.surname = surname  # Фамилия преподавателя
+        self.courses_attached = []  # Список прикрепленных курсов
+
+# Класс лекторов — наследуется от Mentor
+class Lecturer(Mentor):  
+    pass
+
+# Класс экспертов — также наследуется от Mentor
+class Reviewer(Mentor): 
+    pass
+
+
+lecturer = Lecturer('Иван', 'Иванов')
+reviewer = Reviewer('Пётр', 'Петров')
+
+print(isinstance(lecturer, Mentor))   # True 👉 объект класса Lecturer является экземпляром родительского класса Mentor
+print(isinstance(reviewer, Mentor))   # True 👉 объект класса Reviewer является экземпляром родительского класса Mentor
+print(lecturer.courses_attached)      # [] 👉 список прикреплённых курсов пуст
+print(reviewer.courses_attached)      # [] 👉 список прикреплённых курсов пуст
+1

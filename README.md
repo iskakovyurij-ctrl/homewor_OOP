@@ -1,2 +1,2 @@
-# homewor_OOP
+# homework_OOP
 Домашнее задание по теме ООП

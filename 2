@@ -1,0 +1,49 @@
+class Mentor:
+    def __init__(self, name, surname):
+        self.name = name  
+        self.surname = surname 
+        self.courses_attached = [] # Список курсов, за которые закреплен преподаватель
+
+
+class Lecturer(Mentor):  
+    """Лектор получает от студентов оценки за лекции."""
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+        self.grades = {} # Словарь с оценками {курс: [оценки]}
+
+
+class Reviewer(Mentor):  
+    """Эксперт проверяет домашние работы и ставит студентам оценки."""
+    
+    def rate_hw(self, student, course, grade):
+        if isinstance(student, Student) and \
+           course in student.courses_in_progress and \
+           course in self.courses_attached:
+            if course not in student.grades:
+                student.grades[course] = []
+            student.grades[course].append(grade)
+        else:
+            return 'Ошибка'
+
+
+class Student:
+    def __init__(self, last_name, first_name, gender):
+        self.last_name = last_name
+        self.first_name = first_name
+        self.gender = gender
+        self.courses_in_progress = [] # Курсы в процессе обучения
+        self.finished_courses = [] # Законченные курсы
+        self.grades = {} # Оценки за ДЗ
+
+    def rate_lecture(self, lecturer, course, grade):
+        # Студент может оценить только того преподавателя,
+        # кто ведёт его текущий курс и сам прикреплён к нему
+        if isinstance(lecturer, Lecturer) and \
+           course in self.courses_in_progress and \
+           course in lecturer.courses_attached:
+            if course not in lecturer.grades:
+                lecturer.grades[course] = []
+            lecturer.grades[course].append(grade)
+        else:
+            return 'Ошибка'
+1
